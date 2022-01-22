@@ -18,3 +18,5 @@ $router->get('/', function () use ($router) {
 });
 
 $router->post('/api/user/sign-in', 'AuthController@login');
+
+$router->post('/api/user/register', 'AuthController@register');
