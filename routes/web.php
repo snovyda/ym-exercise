@@ -17,6 +17,13 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
-$router->post('/api/user/sign-in', 'AuthController@login');
 
-$router->post('/api/user/register', 'AuthController@register');
+$router->group(['prefix' => '/api/user'], function() use ($router) {
+    $router->post('/sign-in', 'AuthController@login');
+    $router->post('/register', 'AuthController@register');
+
+    $router->group(['middleware' => 'auth'], function () use ($router) {
+        $router->get('/companies', 'UserController@getCompanies');
+        $router->post('/companies', 'UserController@storeCompany');
+    });
+});

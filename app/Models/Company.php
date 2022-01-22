@@ -20,6 +20,15 @@ class Company extends Model
         'description',
     ];
 
+    /**
+     * The attributes excluded from the model's JSON form.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'pivot',
+    ];
+
     public function users()
     {
         return $this->belongsToMany(User::class, 'company_user');

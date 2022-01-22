@@ -50,7 +50,7 @@ class CompanyUserPivotSeeder extends Seeder
         ]);
 
         DB::table('company_user')->insert([
-            'user_id' => 1,
+            'user_id' => 2,
             'company_id' => 8,
         ]);
 
