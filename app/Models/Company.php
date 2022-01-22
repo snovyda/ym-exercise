@@ -19,4 +19,9 @@ class Company extends Model
         'phone',
         'description',
     ];
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'company_user');
+    }
 }
