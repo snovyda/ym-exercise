@@ -65,6 +65,9 @@ $app->configure('auth');
 
 $app->configure('jwt');
 
+$app->configure('mail');
+
+
 /*
 |--------------------------------------------------------------------------
 | Register Middleware
@@ -102,6 +105,12 @@ $app->register(App\Providers\AuthServiceProvider::class);
 $app->register(Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);
 
 $app->register(PHPOpenSourceSaver\JWTAuth\Providers\LumenServiceProvider::class);
+
+$app->register(Illuminate\Notifications\NotificationServiceProvider::class);
+$app->register(Illuminate\Mail\MailServiceProvider::class);
+$app->alias('mailer', Illuminate\Contracts\Mail\Mailer::class);
+$app->alias('mail.manager', Illuminate\Mail\MailManager::class);
+$app->alias('mail.manager', Illuminate\Contracts\Mail\Factory::class);
 /*
 |--------------------------------------------------------------------------
 | Load The Application Routes

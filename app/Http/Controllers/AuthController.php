@@ -3,9 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Auth\Passwords\PasswordBrokerManager;
+use Illuminate\Contracts\Auth\PasswordBroker;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Validator;
+use Symfony\Component\Mime\Message;
 
 class AuthController extends Controller
 {
@@ -61,6 +65,35 @@ class AuthController extends Controller
         return $this->respondWithToken($token);
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function resetPassword(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+        ]);
+
+        if ($validator->fails()) {
+            $error = $validator->errors()->first();
+            return response()->json(['status' => 'error', 'message' => $error], 422);
+        }
+
+        // Send password reset to the user
+        $response = $this->broker()->sendResetLink($request->only('email'));
+
+        if (Password::RESET_LINK_SENT == $response) {
+            $status = 'success';
+            $message = 'Mail sent successfully';
+        } else {
+            $status = 'error';
+            $message = 'Something went wrong';
+        }
+
+        return response()->json(['status' => $status, 'message' => $message]);
+    }
+
 
     /**
      * Get the token array structure.
@@ -76,5 +109,16 @@ class AuthController extends Controller
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60
         ]);
+    }
+
+    /**
+     * Get the broker to be used during password reset.
+     *
+     * @return PasswordBroker
+     */
+    public function broker()
+    {
+        $passwordBrokerManager = new PasswordBrokerManager(app());
+        return $passwordBrokerManager->broker();
     }
 }

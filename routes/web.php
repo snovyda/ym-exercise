@@ -21,6 +21,8 @@ $router->get('/', function () use ($router) {
 $router->group(['prefix' => '/api/user'], function() use ($router) {
     $router->post('/sign-in', 'AuthController@login');
     $router->post('/register', 'AuthController@register');
+    $router->post('/recover-password', 'AuthController@resetPassword');
+    $router->post('/reset-password', ['as' => 'password.reset', 'uses' => 'AuthController@storeNewPassword']);
 
     $router->group(['middleware' => 'auth'], function () use ($router) {
         $router->get('/companies', 'UserController@getCompanies');
