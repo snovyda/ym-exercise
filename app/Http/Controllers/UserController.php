@@ -15,7 +15,6 @@ class UserController extends Controller
      */
     public function getCompanies()
     {
-        /* =============== TEST STRING ================= */
         $companies = User::find(auth()->id())
             ->companies()
             ->orderBy('title')
