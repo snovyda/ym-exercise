@@ -11,7 +11,7 @@
 6) php artisan migrate
 7) php artisan db:seed
 8) php artisan jwt:secret
-9) Update .env file with MAIL_MAILER=log string
+9) Update .env file with "MAIL_MAILER=log" string
 10) php artisan serve
 
 That's all! Now you can navigate to http://127.0.0.1:8000/ and test application endpoints.
